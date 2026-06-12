@@ -54,4 +54,7 @@ pnpm build          # 本番ビルド
 
 ## ライセンス
 
-コードはMIT、教材テキストはCC BY-SA 4.0。
+- **コード**: [MIT License](./LICENSE) — サイト実装・教材エンジンに加え、**レッスン内のサンプルコード**（にわ語・minilang・JavaScript等のコード片）も含みます。学習・改変・再利用は自由です
+- **教材テキスト**: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) — レッスンの文章・図・演習の説明文が対象です
+
+著作者: Kota Mizushima（[@kmizu](https://github.com/kmizu)）。本サイトは個人プロジェクトです。
