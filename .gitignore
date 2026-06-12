@@ -1,0 +1,25 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+
+# environment
+.env
+.env.*
+
+# tests
+coverage/
+playwright-report/
+test-results/
+
+# editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
