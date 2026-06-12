@@ -1,9 +1,18 @@
 ---
+import { getCollection } from 'astro:content';
 import NiwaRunner from '../components/islands/NiwaRunner';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { COURSES, courseByKey } from '../data/courses';
 import { withBase } from '../utils/url';
 
 const heroCode = 'まる を かく';
+
+const lessons = await getCollection('lessons');
+const lessonCount = (key: string) => lessons.filter((l) => l.data.course === key).length;
+const openCourses = COURSES.filter((c) => lessonCount(c.key) > 0);
+const upcomingCourses = COURSES.filter((c) => lessonCount(c.key) === 0);
+const KAZU = ['ひとつ', 'ふたつ', 'みっつ', 'よっつ', 'いつつ', 'むっつ'];
+const courseCountWord = KAZU[openCourses.length - 1] ?? `${openCourses.length}つ`;
 ---
 
 <BaseLayout title="言語の庭">
@@ -58,29 +67,32 @@ const heroCode = 'まる を かく';
     <!-- コース -->
     <section class="courses container">
       <p class="leaf-rule">庭の小道</p>
-      <h2 class="section-title">ふたつのコースと、その先</h2>
+      <h2 class="section-title">
+        {upcomingCourses.length > 0 ? `${courseCountWord}のコースと、その先` : `${courseCountWord}のコース`}
+      </h2>
       <div class="course-cards">
-        <a class="course-card" href={withBase('/courses/kotoba/')}>
-          <span class="course-no">コース 1</span>
-          <h3>ことばとしてのプログラミング</h3>
-          <p>
-            コンピュータという「世界一誠実な読み手」と、ことばを交わすところから。プログラミングの経験はいりません。
-          </p>
-          <span class="course-meta">全10レッスン ・ 経験ゼロから</span>
-        </a>
-        <a class="course-card" href={withBase('/courses/tsukuru/')}>
-          <span class="course-no">コース 2</span>
-          <h3>じぶんの言語をつくる</h3>
-          <p>
-            電卓から始めて、変数、分岐、そして自分だけの文法へ。言語は与えられるものではなく、設計するものだと知る。
-          </p>
-          <span class="course-meta">全12レッスン ・ コース1のつづき</span>
-        </a>
-        <div class="course-card course-card-soon" aria-hidden="true">
-          <span class="course-no">まだ芽が出ていない区画</span>
-          <h3>正規表現 ／ アルゴリズムのかたち ／ 計算できるとは何か</h3>
-          <p>庭は、すこしずつ広がります。</p>
-        </div>
+        {
+          openCourses.map((c) => (
+            <a class="course-card" href={withBase(`/courses/${c.key}/`)}>
+              <span class="course-no">コース {c.no}</span>
+              <h3>{c.title}</h3>
+              <p>{c.tagline}。{c.description.split('。')[0]}。</p>
+              <span class="course-meta">
+                全{c.total}レッスン ・{' '}
+                {c.prerequisite ? `コース${courseByKey(c.prerequisite)?.no}のつづき` : '経験ゼロから'}
+              </span>
+            </a>
+          ))
+        }
+        {
+          upcomingCourses.length > 0 && (
+            <div class="course-card course-card-soon" aria-hidden="true">
+              <span class="course-no">まだ芽が出ていない区画</span>
+              <h3>{upcomingCourses.map((c) => c.title.split(' — ')[0]).join(' ／ ')}</h3>
+              <p>庭は、すこしずつ広がります。</p>
+            </div>
+          )
+        }
       </div>
     </section>
 

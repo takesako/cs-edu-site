@@ -5,7 +5,7 @@ const lessons = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/lessons' }),
   schema: z.object({
     title: z.string(),
-    course: z.enum(['kotoba', 'tsukuru']),
+    course: z.enum(['kotoba', 'tsukuru', 'moyou', 'katachi', 'keisan', 'kata']),
     order: z.number().int().min(1),
     description: z.string(),
     /** ふしぎの種：レッスン末に置く、次レッスンへつながる問い */

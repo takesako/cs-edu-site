@@ -1,13 +1,16 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { COURSES } from '../../data/courses';
+import { COURSES, courseByKey } from '../../data/courses';
 import { withBase } from '../../utils/url';
 
 const lessons = await getCollection('lessons');
 const counts = new Map(
   COURSES.map((c) => [c.key, lessons.filter((l) => l.data.course === c.key).length]),
 );
+// レッスンが1本でも公開されたコースだけ小道として開く。残りは「これから育つもの」
+const openCourses = COURSES.filter((c) => (counts.get(c.key) ?? 0) > 0);
+const upcomingCourses = COURSES.filter((c) => (counts.get(c.key) ?? 0) === 0);
 ---
 
 <BaseLayout title="庭の地図" description="言語の庭のコース一覧。歩ける小道と、これから芽吹く区画。">
@@ -22,7 +25,7 @@ const counts = new Map(
 
     <div class="map-courses">
       {
-        COURSES.map((c) => (
+        openCourses.map((c) => (
           <a class="map-course" href={withBase(`/courses/${c.key}/`)} data-course={c.key}>
             <div class="map-course-head">
               <span class="map-course-no">コース {c.no}</span>
@@ -33,21 +36,28 @@ const counts = new Map(
             <h2>{c.title}</h2>
             <p class="map-course-tagline">{c.tagline}</p>
             <p class="map-course-desc">{c.description}</p>
-            {c.prerequisite && <p class="map-course-pre">コース1のつづきとして歩くのがおすすめ</p>}
+            {c.prerequisite && (
+              <p class="map-course-pre">
+                コース{courseByKey(c.prerequisite)?.no}のつづきとして歩くのがおすすめ
+              </p>
+            )}
           </a>
         ))
       }
 
-      <div class="map-course map-course-soon">
-        <span class="map-course-no">まだ芽が出ていない区画</span>
-        <h2>これから育つもの</h2>
-        <ul>
-          <li>正規表現 — もようをさがすことば</li>
-          <li>アルゴリズムのかたち</li>
-          <li>計算できる、とはどういうことか</li>
-          <li>型のはなし — まちがいを未然に防ぐ文法</li>
-        </ul>
-      </div>
+      {
+        upcomingCourses.length > 0 && (
+          <div class="map-course map-course-soon">
+            <span class="map-course-no">まだ芽が出ていない区画</span>
+            <h2>これから育つもの</h2>
+            <ul>
+              {upcomingCourses.map((c) => (
+                <li>{c.title}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
     </div>
   </main>
 </BaseLayout>
