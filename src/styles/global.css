@@ -1,0 +1,255 @@
+@import './tokens.css';
+
+/* ============================================================
+   基礎
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--c-paper);
+  color: var(--c-ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: var(--leading-prose);
+  font-feature-settings: 'palt' 1; /* 約物の詰め */
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--dur-fast) ease;
+}
+
+/* 紙の質感 — ごく薄いノイズ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.5 0 0 0 0 0.48 0 0 0 0 0.42 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ============================================================
+   タイポグラフィ
+   ============================================================ */
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: var(--tracking-display);
+  line-height: var(--leading-tight);
+  color: var(--c-ink);
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+}
+h2 {
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+}
+h3 {
+  font-size: clamp(1.15rem, 2.2vw, 1.3rem);
+}
+
+p {
+  margin: 0 0 1.4em;
+}
+
+a {
+  color: var(--c-mizu);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  text-decoration-color: color-mix(in srgb, var(--c-mizu) 45%, transparent);
+  transition: text-decoration-color var(--dur-fast) ease;
+}
+
+a:hover {
+  text-decoration-color: var(--c-mizu);
+}
+
+code,
+pre,
+kbd {
+  font-family: var(--font-code);
+  font-size: 0.92em;
+}
+
+:not(pre) > code {
+  background: var(--c-paper-2);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.4em;
+}
+
+strong {
+  font-weight: 700;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--c-moss) 25%, transparent);
+}
+
+/* ============================================================
+   ユーティリティ
+   ============================================================ */
+
+.container {
+  max-width: var(--measure-wide);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+/* 縦書きの飾りラベル */
+.tategaki {
+  writing-mode: vertical-rl;
+  letter-spacing: var(--tracking-wide);
+  font-family: var(--font-display);
+}
+
+/* 飾り罫 — 見出し前の小さな葉印 */
+.leaf-rule {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--c-moss);
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-wide);
+  font-size: 0.9rem;
+}
+
+.leaf-rule::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(to right, var(--c-line-strong), transparent);
+}
+
+/* ============================================================
+   ボタン
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0.55em 1.4em;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) ease;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn-primary {
+  background: var(--c-aka);
+  color: #fdf9f0;
+  box-shadow: var(--shadow-card);
+}
+
+.btn-primary:hover {
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-1px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--c-ink-2);
+  border-color: var(--c-line-strong);
+}
+
+.btn-ghost:hover {
+  background: var(--c-paper-2);
+  color: var(--c-ink);
+}
+
+/* ============================================================
+   フォーカスとモーション配慮
+   ============================================================ */
+
+:focus-visible {
+  outline: 2px solid var(--c-moss);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ページ着地のしずかな立ち上がり */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise {
+  animation: rise-in var(--dur-slow) var(--ease-out) both;
+}
+
+.rise-1 {
+  animation-delay: 60ms;
+}
+.rise-2 {
+  animation-delay: 140ms;
+}
+.rise-3 {
+  animation-delay: 220ms;
+}
+.rise-4 {
+  animation-delay: 300ms;
+}

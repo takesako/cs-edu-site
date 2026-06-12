@@ -1,0 +1,103 @@
+/* ============================================================
+   言語の庭 — デザイントークン
+   昼の庭（light）と夜の庭（dark）。紙と墨と苔と朱。
+   ============================================================ */
+
+:root {
+  /* 書体 */
+  --font-display: 'Zen Old Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+  --font-body:
+    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', 'Noto Sans CJK JP', 'Yu Gothic UI', Meiryo,
+    sans-serif;
+  --font-code:
+    'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, 'Hiragino Kaku Gothic ProN',
+    monospace;
+
+  /* 字間・行間 */
+  --tracking-wide: 0.12em;
+  --tracking-display: 0.06em;
+  --leading-prose: 2;
+  --leading-tight: 1.4;
+
+  /* 寸法 */
+  --measure: 42rem; /* 本文の最大幅 ~68ch相当 */
+  --measure-wide: 64rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+
+  /* 余白スケール */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+  --space-7: 6rem;
+
+  /* 動き */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur-slow: 600ms;
+}
+
+/* ---------- 昼の庭 ---------- */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  --c-paper: #f6f3ea; /* 生成り紙 */
+  --c-paper-2: #efeadd; /* 一段沈んだ紙 */
+  --c-paper-3: #e7e1d0; /* カード縁の砂色 */
+  --c-ink: #2a2823; /* 墨 */
+  --c-ink-2: #5c574b; /* 薄墨 */
+  --c-ink-3: #8a8474; /* さらに薄く */
+
+  --c-moss: #34663f; /* 苔 — 主調 */
+  --c-moss-2: #4c7d56;
+  --c-moss-soft: #dce5d8; /* 苔のうすい背景 */
+  --c-aka: #b9472f; /* 朱 — 行動の色 */
+  --c-aka-soft: #f3ded6;
+  --c-mizu: #3b6e8f; /* 水 — リンク・情報 */
+
+  --c-line: #ddd6c3; /* 罫線 */
+  --c-line-strong: #c9c1a8;
+
+  --c-editor-bg: #fffdf6;
+  --c-editor-gutter: #f0ece0;
+  --c-output-bg: #2a2823;
+  --c-output-text: #e8e4d6;
+
+  --shadow-card: 0 1px 2px rgb(42 40 35 / 0.05), 0 4px 16px rgb(42 40 35 / 0.06);
+  --shadow-lift: 0 2px 4px rgb(42 40 35 / 0.08), 0 12px 32px rgb(42 40 35 / 0.1);
+}
+
+/* ---------- 夜の庭 ---------- */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --c-paper: #151916; /* 夜の墨 */
+  --c-paper-2: #1b211d;
+  --c-paper-3: #232a25;
+  --c-ink: #e6e2d4; /* 月光 */
+  --c-ink-2: #aaa692;
+  --c-ink-3: #7d7a6a;
+
+  --c-moss: #7cb98a; /* 月夜の苔 */
+  --c-moss-2: #5e9a6d;
+  --c-moss-soft: #21301f;
+  --c-aka: #e08767; /* 灯火 */
+  --c-aka-soft: #3a2a20;
+  --c-mizu: #7fb3d5;
+
+  --c-line: #2c332d;
+  --c-line-strong: #3d463e;
+
+  --c-editor-bg: #101411;
+  --c-editor-gutter: #1a201b;
+  --c-output-bg: #0c0f0d;
+  --c-output-text: #d9d5c5;
+
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 4px 16px rgb(0 0 0 / 0.3);
+  --shadow-lift: 0 2px 4px rgb(0 0 0 / 0.4), 0 12px 32px rgb(0 0 0 / 0.45);
+}

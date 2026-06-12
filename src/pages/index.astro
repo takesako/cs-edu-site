@@ -1,20 +1,31 @@
 ---
-// プレースホルダ（Phase 2で本実装）
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/url';
 ---
 
-<!doctype html>
-<html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>言語の庭 — ことばを育てて、言語をつくる</title>
-    <meta name="description" content="登録不要・ずっと無料。プログラミングを「ことば」として学び、最後には自分の言語をつくる学習サイト。" />
-  </head>
-  <body>
-    <main>
-      <h1>言語の庭</h1>
-      <p>ことばを育てて、言語をつくる。</p>
-      <p>ただいま開園準備中です。</p>
-    </main>
-  </body>
-</html>
+<BaseLayout title="言語の庭">
+  <main class="container">
+    <section class="hero">
+      <p class="leaf-rule rise rise-1">ことばを育てて、言語をつくる</p>
+      <h1 class="rise rise-2">コードは、ことばだ。</h1>
+      <p class="hero-lead prose rise rise-3">
+        ここは、プログラミングを「ことば」として学ぶ庭です。
+        いまは開園の準備をしています。もうすぐ、最初のひと言が芽を出します。
+      </p>
+      <a class="btn btn-primary rise rise-4" href={withBase('/courses/')}>庭の地図を見る →</a>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: var(--space-7) var(--space-6);
+    max-width: var(--measure);
+  }
+
+  .hero-lead {
+    margin-block: var(--space-4) var(--space-5);
+    color: var(--c-ink-2);
+    font-size: 1.05rem;
+  }
+</style>
