@@ -1,0 +1,89 @@
+---
+title: たし算の木
+course: tsukuru
+order: 3
+description: 言語に「+」と「-」を教える。粒の並びを木に組み、木を畳んで値にする——インタプリタの心臓部が今日、動き出す。
+seed: 「1 + 2 × 3」のかけ算を先に計算するには、木をどう組めばよいのでしょう。優先順位の正体は、実は木のかたちです。次のレッスンで、電卓が完成します。
+minutes: 35
+---
+
+import MiniLangLab from '../../../components/islands/MiniLangLab';
+import CodeRunner from '../../../components/islands/CodeRunner';
+import Callout from '../../../components/ui/Callout.astro';
+import Exercise from '../../../components/ui/Exercise.astro';
+
+## 言語に、2つめの語彙を
+
+前のレッスンの言語は、数しか話せませんでした。今日は `+` と `-` を教えます。育った姿がこれです。
+
+<MiniLangLab client:visible initialCode={'1 + 2 + 40'} stage="add" />
+
+注目してほしいのは②の欄です。`1 + 2 + 40` という**平らな文字の列**が、**段差のある木**になっています。今日のレッスンは、この段差がすべてです。
+
+## なぜ、木なのか
+
+「1 たす 2 たす 40」を計算するとき、あなたは一度に全部を足しません。**まず 1+2 を計算して 3 にして、それから 3+40 を計算します**。つまり計算には順番があり、順番があるということは、式には「先に固まるまとまり」がある。
+
+そのまとまりの入れ子を、まっすぐ描いたものが木です。`1 + 2 + 40` の木は、こう読めます——「いちばん上の + は、左の『1+2のまとまり』と右の『40』を足すもの」。
+
+<Callout type="yorimichi" title="木はどっちに育つ？">
+  `10 - 3 - 2` を実験室に入れると、木は左に深くなります（左の `10 - 3` が先に固まる）。これを「左結合」と呼びます。もし右結合だったら `10 - (3 - 2)` で答えは9。実際は5。引き算の答えが木のかたちで変わる——**結合の向きも、言語設計者が決めていること**なのです。
+</Callout>
+
+## 木を、データとして書く
+
+工程②が作る「木」は、プログラムの中ではただのデータです。JavaScriptで書くなら、こうなります。
+
+<CodeRunner
+  client:visible
+  initialCode={'// 「1 + 2」の木。枝分かれをオブジェクトの入れ子で表す\nconst tree = {\n  op: "+",\n  left:  { value: 1 },\n  right: { value: 2 },\n};\n\nconsole.log(tree.op);\nconsole.log(tree.left.value);\nconsole.log(tree.right.value);'}
+  storageKey="tsukuru-03-a"
+/>
+
+`{ op, left, right }` という入れ子——これが構文木の正体です。神秘的なものは何もありません。**枝分かれを、オブジェクトの入れ子で写しただけ**です。
+
+## 木を畳む——評価器を書く
+
+木ができれば、工程③（意味にする）は驚くほど短く書けます。方針は一つ：**葉っぱなら値そのもの、枝分かれなら左右を先に畳んでから計算**。
+
+<CodeRunner
+  client:visible
+  initialCode={'function evaluate(tree) {\n  if (tree.value !== undefined) {\n    return tree.value; // 葉っぱ：数はその数\n  }\n  const l = evaluate(tree.left);  // 左を先に畳む\n  const r = evaluate(tree.right); // 右も畳む\n  if (tree.op === "+") return l + r;\n  if (tree.op === "-") return l - r;\n}\n\n// (1 + 2) + 40 の木\nconst tree = {\n  op: "+",\n  left: { op: "+", left: { value: 1 }, right: { value: 2 } },\n  right: { value: 40 },\n};\n\nconsole.log(evaluate(tree));'}
+  storageKey="tsukuru-03-b"
+/>
+
+`evaluate` が自分自身を呼んでいることに気づきましたか。木の枝の先にはまた木がある——だから「木を畳む手順」の中に「木を畳む手順」が現れる。この自己言及は**再帰**と呼ばれ、はじめて見ると目が回ります。ここは多くの人がつまずく場所で、つまずくのが普通です。
+
+目が回ったら、こう唱えてください。「**左右はもう畳めたことにして、最後の一手だけ考える**」。1+2のまとまりは、畳めば3になる。40は40。なら最後は 3+40。それだけのことを、コンピュータは木のすみずみまで律儀にやってくれます。
+
+## 計算とは、木を畳むこと
+
+実験室に戻って、②の木と③の値を見くらべてください。長い式でも、木の**いちばん深い葉っぱから順に固まって、根もとで1個の値になる**。
+
+コース1のレッスン6で「式は評価されて値になる」と学びました。その「評価」の正体が、今日書いた10行ほどの `evaluate` です。Pythonも、JavaScriptも、にわ語も、心臓部ではこれと同じ畳みかたをしています。
+
+<Exercise title="演習：言語に「×」を密輸する">
+  上の `evaluate` に、かけ算 `"*"` を処理する1行を足して、`2 × (3 + 4)` にあたる木を組んで、14が出ることを確かめてください。
+
+  <details>
+    <summary>ヒント1（考え方）</summary>
+    <p>`"+"` と `"-"` の2行が、お手本としてすでに並んでいます。3行目を足すだけです。木のほうは「かけ算の右側が、たし算のまとまり」になるように入れ子を組みます。</p>
+  </details>
+
+  <details>
+    <summary>ヒント2（かたち）</summary>
+    <p>`if (tree.op === "*") return l * r;` を足し、木は `{ op: "*", left: { value: 2 }, right: { op: "+", left: { value: 3 }, right: { value: 4 } } }`。</p>
+  </details>
+
+  <details>
+    <summary>こたえ（の一例）</summary>
+    <p>上の2つを組み合わせれば 14 が出ます。気づいたでしょうか——**評価器にとって、かけ算の追加は1行**でした。大変なのは、文字の列から木を組む側（工程②）。だから次のレッスンは、そこに正面から取り組みます。</p>
+  </details>
+</Exercise>
+
+## このレッスンで分かったこと
+
+- 式には「先に固まるまとまり」があり、その入れ子を描いたものが**構文木**
+- 木の正体は `{ op, left, right }` という、ただのデータの入れ子
+- 評価＝**木を畳むこと**。葉は値そのもの、枝は左右を畳んでから計算
+- 畳む手順は**再帰**で書ける。目が回るのは普通。「最後の一手だけ考える」
