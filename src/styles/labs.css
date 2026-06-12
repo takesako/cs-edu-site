@@ -1,0 +1,186 @@
+/* ============================================================
+   コース3〜6の実験室（RegexLab / AlgoViz / TuringLab）
+   ============================================================ */
+
+/* ---------- RegexLab ---------- */
+
+.regexlab-inputs {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.regexlab-pattern input {
+  width: 100%;
+  font-family: var(--font-code);
+  font-size: 16px;
+  color: var(--c-ink);
+  background: var(--c-editor-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.regexlab-text {
+  margin: 0;
+  font-family: var(--font-code);
+  font-size: 0.95rem;
+  line-height: 2;
+  white-space: pre-wrap;
+  word-break: break-all;
+  background: var(--c-paper-2);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.regexlab-text mark {
+  background: var(--c-moss-soft);
+  color: var(--c-moss);
+  font-weight: 600;
+  border-bottom: 2px solid var(--c-moss);
+  border-radius: 2px;
+  padding-block: 0.1em;
+}
+
+.regexlab-lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.regexlab-lines li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: 0.95rem;
+}
+
+.regexlab-lines code {
+  font-family: var(--font-code);
+}
+
+.regexlab-mark {
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.regexlab-lines .is-ok .regexlab-mark {
+  color: var(--c-moss);
+}
+
+.regexlab-lines .is-ng .regexlab-mark {
+  color: var(--c-aka);
+}
+
+.regexlab-lines .is-ng code {
+  color: var(--c-ink-3);
+}
+
+.regexlab-note {
+  margin: 0;
+  color: var(--c-ink-3);
+  font-size: 0.9rem;
+}
+
+/* ステップ実行 */
+
+.regexlab-tape {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-code);
+  font-size: 1.3rem;
+  letter-spacing: 0.15em;
+}
+
+.regexlab-tape span {
+  color: var(--c-ink-3);
+  border-bottom: 2px solid var(--c-line);
+  padding: 0 0.05em;
+}
+
+.regexlab-tape .is-read {
+  color: var(--c-moss);
+  font-weight: 700;
+  border-bottom-color: var(--c-moss);
+}
+
+.regexlab-controls {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.regexlab-status {
+  margin: var(--space-3) 0 0;
+  color: var(--c-ink-2);
+  font-size: 0.92rem;
+}
+
+/* 状態機械の図 */
+
+.regexlab-diagram {
+  overflow-x: auto;
+  padding-block: var(--space-2);
+}
+
+.regexlab-diagram svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.nfa-edge {
+  color: var(--c-ink-3);
+}
+
+.nfa-edge path {
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.nfa-edge.is-eps {
+  color: color-mix(in srgb, var(--c-ink-3) 55%, transparent);
+}
+
+.nfa-edge text {
+  font-family: var(--font-code);
+  font-size: 12px;
+  fill: var(--c-ink-2);
+  paint-order: stroke;
+  stroke: var(--c-paper);
+  stroke-width: 4;
+}
+
+.nfa-state circle {
+  fill: var(--c-paper-2);
+  stroke: var(--c-ink-2);
+  stroke-width: 1.5;
+}
+
+.nfa-state text {
+  font-family: var(--font-code);
+  font-size: 11px;
+  fill: var(--c-ink-2);
+}
+
+.nfa-state.is-accept circle {
+  stroke: var(--c-moss);
+}
+
+.nfa-state.is-active circle:first-of-type {
+  fill: var(--c-moss-soft);
+  stroke: var(--c-moss);
+  stroke-width: 2.5;
+}
+
+.nfa-state.is-active text {
+  fill: var(--c-moss);
+  font-weight: 700;
+}
+
+.nfa-start-arrow {
+  stroke: var(--c-ink-2);
+  stroke-width: 1.5;
+  color: var(--c-ink-2);
+}
