@@ -65,6 +65,9 @@ export async function createEditor(opts: CreateEditorOptions): Promise<EditorHan
       langExt,
       gardenTheme,
       gardenHighlight,
+      EditorView.contentAttributes.of({
+        'aria-label': opts.language === 'niwa' ? 'にわ語のコードエディタ' : 'JavaScriptのコードエディタ',
+      }),
       EditorView.lineWrapping,
       ...(opts.placeholder ? [placeholder(opts.placeholder)] : []),
       EditorView.updateListener.of((update) => {

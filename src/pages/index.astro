@@ -11,15 +11,15 @@ const heroCode = 'まる を かく';
     <!-- ファーストビュー：説明より先に、ボタン -->
     <section class="hero container">
       <div class="hero-text">
-        <p class="leaf-rule rise rise-1">ことばを育てて、言語をつくる</p>
-        <h1 class="rise rise-2">コードは、<br class="sp-only" />ことばだ。</h1>
-        <p class="hero-lead rise rise-3">
+        <p class="leaf-rule">ことばを育てて、言語をつくる</p>
+        <h1>コードは、<br class="sp-only" />ことばだ。</h1>
+        <p class="hero-lead rise rise-2">
           下の「実行する」を押してください。<br />
           それだけで、始まります。
         </p>
       </div>
-      <div class="hero-runner rise rise-4">
-        <NiwaRunner client:load initialCode={heroCode} canvasHeight={260} storageKey="top-hero" />
+      <div class="hero-runner rise rise-3">
+        <NiwaRunner client:idle initialCode={heroCode} canvasHeight={260} storageKey="top-hero" />
         <p class="hero-prompt">
           うまくいったら、<code>まる</code> を <code>さんかく</code> や <code>ほし</code>
           に変えて、もう一度押してみてください。
@@ -250,7 +250,6 @@ const heroCode = 'まる を かく';
   .course-card-soon {
     border-style: dashed;
     box-shadow: none;
-    opacity: 0.7;
   }
 
   .philosophy {
