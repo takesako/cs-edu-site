@@ -311,3 +311,177 @@
   color: var(--c-ink-3);
   margin-left: auto;
 }
+
+/* ---------- TuringLab ---------- */
+
+.turinglab-inputs {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-3);
+  align-items: end;
+}
+
+.turinglab-inputs input {
+  width: 100%;
+  font-family: var(--font-code);
+  font-size: 16px;
+  color: var(--c-ink);
+  background: var(--c-editor-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+}
+
+.turinglab-state {
+  text-align: right;
+}
+
+.turinglab-statename {
+  display: inline-block;
+  font-family: var(--font-code);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--c-mizu);
+  background: color-mix(in srgb, var(--c-mizu) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--c-mizu) 35%, transparent);
+  border-radius: var(--radius-md);
+  padding: 0.15em 0.7em;
+}
+
+.turinglab-statename.is-halted {
+  color: var(--c-moss);
+  background: var(--c-moss-soft);
+  border-color: color-mix(in srgb, var(--c-moss) 35%, transparent);
+}
+
+.turinglab-tape {
+  display: flex;
+  justify-content: center;
+  gap: 2px;
+  overflow: hidden;
+  padding-block: var(--space-2);
+}
+
+.turinglab-cell {
+  flex-shrink: 0;
+  width: 2em;
+  height: 2.4em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-code);
+  font-size: 1.05rem;
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  background: var(--c-paper-2);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.turinglab-cell.is-blank {
+  color: var(--c-ink-3);
+  opacity: 0.45;
+}
+
+.turinglab-cell.is-head {
+  border-color: var(--c-aka);
+  border-width: 2px;
+  background: color-mix(in srgb, var(--c-aka) 10%, var(--c-paper-2));
+  opacity: 1;
+  color: var(--c-ink);
+  font-weight: 700;
+}
+
+.turinglab-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.turinglab-verdict {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.turinglab-verdict.is-halted {
+  color: var(--c-moss);
+}
+
+.turinglab-verdict.is-warn {
+  color: var(--c-aka);
+}
+
+.turinglab-rules {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.turinglab-rules th,
+.turinglab-rules td {
+  border: 1px solid var(--c-line);
+  padding: 0.35em 0.7em;
+  text-align: left;
+}
+
+.turinglab-rules th {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  color: var(--c-ink-2);
+  background: var(--c-paper-2);
+}
+
+.turinglab-rules .turinglab-sym {
+  font-family: var(--font-code);
+}
+
+.turinglab-rules tr.is-active td {
+  background: var(--c-moss-soft);
+  border-color: color-mix(in srgb, var(--c-moss) 40%, transparent);
+}
+
+.turinglab-rules input,
+.turinglab-rules select {
+  width: 100%;
+  min-width: 3.5em;
+  font-family: var(--font-code);
+  font-size: 16px;
+  color: var(--c-ink);
+  background: var(--c-editor-bg);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  padding: 0.15em 0.4em;
+}
+
+.turinglab-rowbtn {
+  border: none;
+  background: none;
+  color: var(--c-ink-3);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.2em 0.5em;
+}
+
+.turinglab-rowbtn:hover {
+  color: var(--c-aka);
+}
+
+.turinglab-addrule {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 560px) {
+  .turinglab-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .turinglab-state {
+    text-align: left;
+  }
+
+  .turinglab-rules {
+    font-size: 0.82rem;
+  }
+}
