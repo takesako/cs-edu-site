@@ -1,82 +1,10 @@
----
-import { withBase } from '../../utils/url';
----
-
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="footer-brand">
-      <p class="footer-name">言語の庭</p>
-      <p class="footer-tag">ことばを育てて、言語をつくる。</p>
-    </div>
-    <nav aria-label="フッター">
-      <ul class="footer-links">
-        <li><a href={withBase('/courses/')}>コース一覧</a></li>
-        <li><a href={withBase('/playground/')}>あそびば</a></li>
-        <li><a href={withBase('/workshop/')}>ことばの工房</a></li>
-        <li><a href={withBase('/glossary/')}>用語の庭</a></li>
-        <li><a href={withBase('/about/')}>この庭について</a></li>
-        <li><a href="https://github.com/kmizu/cs-edu-site">GitHub</a></li>
-      </ul>
-    </nav>
-    <p class="footer-note">
-      登録不要・広告なし・ずっと無料。<br />
-      この庭はオープンソースです。
-    </p>
-  </div>
-</footer>
+<footer class="site-footer" aria-hidden="true"></footer>
 
 <style>
   .site-footer {
     margin-top: var(--space-7);
+    height: 1.75rem;
     border-top: 1px solid var(--c-line);
     background: var(--c-paper-2);
-    padding-block: var(--space-6);
-  }
-
-  .footer-inner {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
-    justify-content: space-between;
-    align-items: start;
-  }
-
-  .footer-name {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.1rem;
-    margin: 0;
-  }
-
-  .footer-tag {
-    color: var(--c-ink-2);
-    font-size: 0.9rem;
-    margin: var(--space-1) 0 0;
-  }
-
-  .footer-links {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3) var(--space-4);
-  }
-
-  .footer-links a {
-    color: var(--c-ink-2);
-    text-decoration: none;
-    font-size: 0.9rem;
-  }
-
-  .footer-links a:hover {
-    color: var(--c-moss);
-  }
-
-  .footer-note {
-    color: var(--c-ink-3);
-    font-size: 0.85rem;
-    margin: 0;
-    line-height: 1.8;
   }
 </style>
