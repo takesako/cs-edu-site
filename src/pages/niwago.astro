@@ -1,0 +1,468 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="にわ語 言語仕様" description="にわ語の字句仕様、文法、値、文、式、描画モデル、エラー方針をまとめた仕様書。">
+  <main class="container">
+    <article class="spec prose">
+      <p class="leaf-rule">ことばのしくみ</p>
+      <h1>にわ語 言語仕様</h1>
+      <h2>1. 概要</h2>
+      <p>にわ語は、ことばの庭で育てるための、日本語風の小さなプログラミング言語です。まるやほしを描いたり、文字を出したり、名前をつけたり、同じ動きをくりかえしたりできます。条件によって動きを変えたり、自分だけの「ことば」を定義したりしながら、プログラミング言語のしくみを少しずつ育てていきます。<br />
+      にわ語は、タートルグラフィックス風の描画、文字出力、変数、繰り返し、条件分岐、手順定義を扱います。kmizuさんによる本家の言語仕様から<code>ちがう</code>, <code>ほんとう</code>, <code>うそ</code>をtakesakoが追加しています。</p>
+      <h2>2. 字句仕様</h2>
+      <p>にわ語は分かち書きを前提とします。語と語のあいだは、半角空白、タブ、全角空白で区切ります。</p>
+      <pre><code class="language-niwa">まる を かく
+50 すすむ
+みぎ へ 90 まわる</code></pre>
+      <h3>2.1 文の区切り</h3>
+      <p>文は改行または <code>。</code> で区切ります。 連続する区切りは1つの区切りとして扱います。</p>
+      <pre><code class="language-niwa">まる を かく
+50 すすむ。みぎ へ 90 まわる</code></pre>
+      <h3>2.2 コメント</h3>
+      <p><code>※</code> または <code>#</code> から行末まではコメントです。</p>
+      <pre><code class="language-niwa">まる を かく ※ 円を描く
+50 すすむ # 50進む</code></pre>
+      <h3>2.3 数値</h3>
+      <p>数値は半角数字・全角数字・小数に対応します。</p>
+      <pre><code class="language-niwa">90
+１２
+3.5</code></pre>
+      <p>全角数字は内部的に半角に変換されます。</p>
+      <h3>2.4 文字列</h3>
+      <p>文字列は <code>「</code> と <code>」</code> で囲みます。</p>
+      <pre><code class="language-niwa">「こんにちは」 と いう</code></pre>
+      <p>閉じる <code>」</code> がない場合はエラーになります。</p>
+      <h3>2.5 使用できる記号</h3>
+      <p>使用できる主な記号は次の通りです。</p>
+      <pre><code class="language-text">+ - * / × ÷ ( ) &#123; &#125; 「 」 ※ # 。</code></pre>
+      <p><code>｛ ｝ （ ）</code> の全角括弧も、それぞれ <code>&#123; &#125; ( )</code> として扱われます。</p>
+      <h2>3. 予約語・助詞</h2>
+      <h3>3.1 助詞</h3>
+      <pre><code class="language-text">を へ と が より</code></pre>
+      <h3>3.2 キーワード</h3>
+      <pre><code class="language-text">かく
+いう
+すすむ
+まわる
+かい
+くりかえす
+もし
+ならば
+ちがえば
+とよぶ
+にする
+とは
+おなじ
+ちがう
+おおきい
+ちいさい</code></pre>
+      <h2>4. 値の種類</h2>
+      <p>にわ語の値には次の種類があります。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>種類</th><th>例</th><th>説明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>数</td><td><code>90</code>, <code>3.5</code></td><td>計算、距離、角度、回数などに使う</td></tr>
+            <tr><td>文字列</td><td><code>「こんにちは」</code></td><td><code>いう</code> で出力できる</td></tr>
+            <tr><td>真偽値</td><td><code>ほんとう</code>, <code>うそ</code></td><td>比較式の結果として使う</td></tr>
+            <tr><td>色</td><td><code>あか</code>, <code>みどり</code></td><td>描画色に使う</td></tr>
+            <tr><td>形</td><td><code>まる</code>, <code>さんかく</code></td><td><code>かく</code> で描画できる</td></tr>
+            <tr><td>ことば</td><td><code>はなびら</code></td><td><code>とは &#123; ... &#125;</code> で定義した手順</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>真偽値は比較式の結果として使われます。</p>
+      <h2>5. 組み込みのことば</h2>
+      <h3>5.1 形</h3>
+      <pre><code class="language-text">まる
+さんかく
+しかく
+ほし</code></pre>
+      <p>使用例です。</p>
+      <pre><code class="language-niwa">まる を かく
+さんかく を かく
+しかく を かく
+ほし を かく</code></pre>
+      <h3>5.2 色</h3>
+      <pre><code class="language-text">あか
+だいだい
+き
+きいろ
+みどり
+そら
+あお
+むらさき
+もも
+ぴんく
+ちゃ
+くろ
+しろ
+はい</code></pre>
+      <p>色は内部的には16進カラーコードとして扱われます。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>色のことば</th><th>値</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>あか</td><td><code>#c4503c</code></td></tr>
+            <tr><td>だいだい</td><td><code>#d97f29</code></td></tr>
+            <tr><td>き / きいろ</td><td><code>#d9a521</code></td></tr>
+            <tr><td>みどり</td><td><code>#4a7c59</code></td></tr>
+            <tr><td>そら</td><td><code>#6aa5c9</code></td></tr>
+            <tr><td>あお</td><td><code>#3a6ea5</code></td></tr>
+            <tr><td>むらさき</td><td><code>#7d5ba6</code></td></tr>
+            <tr><td>もも / ぴんく</td><td><code>#d98a9e</code></td></tr>
+            <tr><td>ちゃ</td><td><code>#8a6240</code></td></tr>
+            <tr><td>くろ</td><td><code>#2a2823</code></td></tr>
+            <tr><td>しろ</td><td><code>#f0ece0</code></td></tr>
+            <tr><td>はい</td><td><code>#999388</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>5.3 描画設定</h3>
+      <p>次の名前は、初期状態で定義されています。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>名前</th><th>初期値</th><th>説明</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>いろ</td><td><code>ink</code></td><td>現在の描画色。<code>ink</code> は描画側のテーマ依存の墨色</td></tr>
+            <tr><td>ふとさ</td><td><code>3</code></td><td>線の太さ</td></tr>
+            <tr><td>おおきさ</td><td><code>80</code></td><td>図形の大きさ</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <pre><code class="language-niwa">いろ を あか にする
+ふとさ を 5 にする
+おおきさ を 120 にする
+まる を かく</code></pre>
+      <p><code>いろ</code> には色だけを代入できます。 <code>ふとさ</code> と <code>おおきさ</code> には数だけを代入できます。</p>
+      <h2>6. 文の仕様</h2>
+      <h3>6.1 描画文</h3>
+      <pre><code class="language-niwa">&lt;形またはことば&gt; を かく</code></pre>
+      <p>例です。</p>
+      <pre><code class="language-niwa">まる を かく
+ほし を かく</code></pre>
+      <p><code>かく</code> で描けるのは、組み込みの形、または自分で定義したことばです。</p>
+      <h3>6.2 出力文</h3>
+      <pre><code class="language-niwa">&lt;式&gt; と いう
+&lt;式&gt; を いう</code></pre>
+      <p><code>と</code> と <code>を</code> の両方に対応します。</p>
+      <pre><code class="language-niwa">「こんにちは」 と いう
+1 + 2 × 3 と いう
+「やあ」 を いう</code></pre>
+      <p>出力は文字列配列 <code>output</code> に追加されます。 出力は最大1000行までです。</p>
+      <h3>6.3 移動文</h3>
+      <pre><code class="language-niwa">&lt;距離&gt; すすむ</code></pre>
+      <p>現在位置から、現在の向きへ指定距離だけ線を描いて進みます。 初期位置は <code>(0, 0)</code>、初期方向は上向きです。</p>
+      <pre><code class="language-niwa">50 すすむ</code></pre>
+      <p>初期状態では、<code>50 すすむ</code> は <code>(0, 0)</code> から <code>(0, -50)</code> への線になります。</p>
+      <h3>6.4 回転文</h3>
+      <pre><code class="language-niwa">みぎ へ &lt;角度&gt; まわる
+ひだり へ &lt;角度&gt; まわる</code></pre>
+      <pre><code class="language-niwa">みぎ へ 90 まわる
+50 すすむ</code></pre>
+      <p>右回転は角度を加算し、左回転は角度を減算します。</p>
+      <h3>6.5 名づけ文</h3>
+      <pre><code class="language-niwa">&lt;値&gt; を &lt;名前&gt; とよぶ</code></pre>
+      <pre><code class="language-niwa">90 を かくど とよぶ
+かくど と いう</code></pre>
+      <p>同じスコープ内で同じ名前を二重に定義するとエラーになります。 値を変更したい場合は <code>にする</code> を使います。</p>
+      <h3>6.6 付け替え文</h3>
+      <pre><code class="language-niwa">&lt;名前&gt; を &lt;値&gt; にする</code></pre>
+      <pre><code class="language-niwa">10 を x とよぶ
+x を x + 5 にする
+x と いう</code></pre>
+      <p>未定義の名前を付け替えようとするとエラーになります。</p>
+      <h3>6.7 繰り返し文</h3>
+      <pre><code class="language-niwa">&lt;回数&gt; かい くりかえす &#123;
+  &lt;文&gt;
+  ...
+&#125;</code></pre>
+      <pre><code class="language-niwa">4 かい くりかえす &#123;
+  25 すすむ
+  みぎ へ 90 まわる
+&#125;</code></pre>
+      <p>回数は <code>0</code> 以上の整数でなければなりません。 文字列、小数、負の数は回数として使えません。</p>
+      <h3>6.8 条件分岐文</h3>
+      <pre><code class="language-niwa">もし &lt;条件&gt; ならば &#123;
+  &lt;文&gt;
+&#125; ちがえば &#123;
+  &lt;文&gt;
+&#125;</code></pre>
+      <p><code>ちがえば</code> ブロックは省略できます。</p>
+      <pre><code class="language-niwa">もし 3 が 2 より おおきい ならば &#123;
+  「はい」 と いう
+&#125; ちがえば &#123;
+  「いいえ」 と いう
+&#125;</code></pre>
+      <p>条件には、真偽値になる比較式を使います。</p>
+      <h3>6.9 ことばの定義</h3>
+      <pre><code class="language-niwa">&lt;名前&gt; とは &#123;
+  &lt;文&gt;
+  ...
+&#125;</code></pre>
+      <pre><code class="language-niwa">はなびら とは &#123;
+  まる を かく
+&#125;</code></pre>
+      <p>定義したことばは、名前だけの文として呼び出せます。</p>
+      <pre><code class="language-niwa">はなびら</code></pre>
+      <p>また、定義したことばは <code>を かく</code> でも呼び出せます。</p>
+      <pre><code class="language-niwa">はなびら を かく</code></pre>
+      <h2>7. 式の仕様</h2>
+      <h3>7.1 基本式</h3>
+      <p>式として使えるものは次の通りです。</p>
+      <pre><code class="language-text">数
+文字列
+名前
+( 式 )
+-式</code></pre>
+      <p>例です。</p>
+      <pre><code class="language-niwa">10
+「こんにちは」
+x
+( 2 + 3 ) × 4
+-10</code></pre>
+      <h3>7.2 四則演算</h3>
+      <p>対応する演算子は次の通りです。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>演算</th><th>演算子</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>加算</td><td><code>+</code></td></tr>
+            <tr><td>減算</td><td><code>-</code></td></tr>
+            <tr><td>乗算</td><td><code>*</code>, <code>×</code></td></tr>
+            <tr><td>除算</td><td><code>/</code>, <code>÷</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>優先順位は、通常の算数と同じです。 <code>×</code>, <code>÷</code>, <code>*</code>, <code>/</code> が <code>+</code>, <code>-</code> より先に計算されます。 括弧で優先順位を変えられます。</p>
+      <pre><code class="language-niwa">2 + 3 × 4 と いう       ※ 7
+( 2 + 3 ) × 4 と いう   ※ 20</code></pre>
+      <h3>7.3 文字列の加算</h3>
+      <p><code>+</code> は、数どうしなら加算になります。 どちらか一方が文字列の場合は、表示用文字列として連結されます。</p>
+      <pre><code class="language-niwa">「こと」 + 「ば」 と いう</code></pre>
+      <p>結果は <code>ことば</code> です。</p>
+      <h3>7.4 比較式</h3>
+      <p>比較式は、条件分岐の条件として使います。</p>
+      <pre><code class="language-niwa">&lt;式&gt; が &lt;式&gt; より おおきい
+&lt;式&gt; が &lt;式&gt; より ちいさい
+&lt;式&gt; が &lt;式&gt; と おなじ
+&lt;式&gt; が &lt;式&gt; と ちがう</code></pre>
+      <pre><code class="language-niwa">もし x が 3 より おおきい ならば &#123;
+  「大きい」 と いう
+&#125;
+
+もし こたえ が 7 と おなじ ならば &#123;
+  「正解」 と いう
+&#125;
+
+もし こたえ が 7 と ちがう ならば &#123;
+  「まだ正解ではありません」 と いう
+&#125;</code></pre>
+      <p><code>おおきい</code> と <code>ちいさい</code> は数どうしの比較です。 <code>おなじ</code> は、数どうしまたは文字列どうしなら値を比較します。 <code>ちがう</code> は、<code>おなじ</code> の反対です。 数どうし・文字列どうしで値が違う場合は <code>ほんとう</code> になります。 数と文字列のように種類が違う場合も、同じではないので <code>ちがう</code> は <code>ほんとう</code> になります。</p>
+      <h2>8. 描画モデル</h2>
+      <p>にわ語の描画はタートルグラフィックス風です。</p>
+      <p>初期状態は次の通りです。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>項目</th><th>値</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>位置</td><td><code>(0, 0)</code></td></tr>
+            <tr><td>向き</td><td><code>-90°</code>、つまり上向き</td></tr>
+            <tr><td>色</td><td><code>ink</code></td></tr>
+            <tr><td>太さ</td><td><code>3</code></td></tr>
+            <tr><td>大きさ</td><td><code>80</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><code>すすむ</code> は線を描きます。 <code>まる</code>, <code>さんかく</code>, <code>しかく</code>, <code>ほし</code> は現在位置を中心に描画します。</p>
+      <p>描画結果は、次のような描画コマンド列として返ります。</p>
+      <pre><code class="language-ts">type DrawCommand =
+  | &#123; kind: &#x27;line&#x27;; x1: number; y1: number; x2: number; y2: number; color: string; width: number &#125;
+  | &#123; kind: &#x27;circle&#x27;; x: number; y: number; r: number; color: string; width: number &#125;
+  | &#123; kind: &#x27;polygon&#x27;; points: &#123; x: number; y: number &#125;[]; color: string; width: number &#125;</code></pre>
+      <p>座標値は小数第2位に丸められます。</p>
+      <h2>9. スコープと名前</h2>
+      <p>名前は環境 <code>Env</code> に保存されます。</p>
+      <p><code>とよぶ</code> は現在のスコープに新しい名前を定義します。 同じスコープに同名の名前がある場合は失敗します。</p>
+      <p><code>にする</code> は、現在のスコープから親スコープへさかのぼって名前を探し、見つかった名前の値を変更します。 見つからない場合はエラーです。</p>
+      <p>ことばを呼び出すときは、グローバル環境の子スコープで実行されます。</p>
+      <h2>10. 安全装置</h2>
+      <p>無限ループや過大な出力を避けるため、実行時に次の制限があります。</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>制限</th><th>値</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>実行ステップ（燃料）</td><td><code>100000</code></td></tr>
+            <tr><td>ことば呼び出しの深さ</td><td><code>200</code></td></tr>
+            <tr><td>描画コマンド数</td><td><code>20000</code></td></tr>
+            <tr><td>出力行数</td><td><code>1000</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>制限を超えるとエラーになります。</p>
+      <h2>11. エラー方針</h2>
+      <p>にわ語のエラーは、叱るためではなく、読めなかった場所と理由を伝えるためのものです。 エラーには次の情報が含まれます。</p>
+      <pre><code class="language-ts">interface NiwaError &#123;
+  message: string
+  span: &#123; start: number; end: number &#125;
+  hint?: string
+&#125;</code></pre>
+      <p><code>span.start</code> と <code>span.end</code> は、ソースコード上の文字位置です。 UIでは、この範囲を使ってエラー箇所をハイライトできます。</p>
+      <p>例です。</p>
+      <pre><code class="language-niwa">まる を</code></pre>
+      <p>このような中途半端な文では、エラー位置とヒントが返ります。</p>
+      <h2>12. 構文一覧</h2>
+      <pre><code class="language-text">プログラム      ::= 文* EOF
+文              ::= 描画文
+                  | 出力文
+                  | 移動文
+                  | 回転文
+                  | 名づけ文
+                  | 付け替え文
+                  | 繰り返し文
+                  | 条件分岐文
+                  | ことば定義
+                  | ことば呼び出し
+
+描画文          ::= 式 &quot;を&quot; &quot;かく&quot;
+出力文          ::= 式 &quot;と&quot; &quot;いう&quot; | 式 &quot;を&quot; &quot;いう&quot;
+移動文          ::= 式 &quot;すすむ&quot;
+回転文          ::= (&quot;みぎ&quot; | &quot;ひだり&quot;) &quot;へ&quot; 式 &quot;まわる&quot;
+名づけ文        ::= 式 &quot;を&quot; 名前 &quot;とよぶ&quot;
+付け替え文      ::= 名前 &quot;を&quot; 式 &quot;にする&quot;
+繰り返し文      ::= 式 &quot;かい&quot; &quot;くりかえす&quot; ブロック
+条件分岐文      ::= &quot;もし&quot; 式 &quot;ならば&quot; ブロック (&quot;ちがえば&quot; ブロック)?
+ことば定義      ::= 名前 &quot;とは&quot; ブロック
+ことば呼び出し  ::= 名前
+
+ブロック        ::= &quot;&#123;&quot; 文* &quot;&#125;&quot;
+
+式              ::= 比較式
+加減式          ::= 乗除式 ((&quot;+&quot; | &quot;-&quot;) 乗除式)*
+乗除式          ::= 基本式 ((&quot;*&quot; | &quot;×&quot; | &quot;/&quot; | &quot;÷&quot;) 基本式)*
+基本式          ::= 数 | 文字列 | 名前 | &quot;(&quot; 式 &quot;)&quot; | &quot;-&quot; 基本式
+比較式          ::= 加減式 (&quot;が&quot; 加減式 ((&quot;より&quot; (&quot;おおきい&quot; | &quot;ちいさい&quot;)) 
+                  | (&quot;と&quot; (&quot;おなじ&quot; | &quot;ちがう&quot;))))?</code></pre>
+      <p>構文に書かれている記号の意味は以下の通りです。</p>
+      <pre><code>::=   左側のものを、右側の形として定義する
+|     または
+*     0回以上の繰り返し
+()    まとまり
+?     あってもなくてもよい
+&quot;...&quot; その文字そのもの
+EOF   入力の終わり</code></pre>
+      <p>プログラミング言語の構文を短い記号で定義する文法規則（BNFの書き方）です。</p>
+      <h2>13. サンプル</h2>
+      <h3>13.1 正方形を描く</h3>
+      <pre><code class="language-niwa">4 かい くりかえす &#123;
+  50 すすむ
+  みぎ へ 90 まわる
+&#125;</code></pre>
+      <h3>13.2 色と大きさを変えて描く</h3>
+      <pre><code class="language-niwa">いろ を あか にする
+ふとさ を 5 にする
+おおきさ を 120 にする
+まる を かく</code></pre>
+      <h3>13.3 ことばを定義する</h3>
+      <pre><code class="language-niwa">はなびら とは &#123;
+  まる を かく
+  みぎ へ 45 まわる
+&#125;
+
+8 かい くりかえす &#123;
+  はなびら
+&#125;</code></pre>
+      <h3>13.4 条件分岐</h3>
+      <pre><code class="language-niwa">7 を こたえ とよぶ
+
+もし こたえ が 7 と おなじ ならば &#123;
+  「正解」 と いう
+&#125; ちがえば &#123;
+  「不正解」 と いう
+&#125;</code></pre>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .spec {
+    padding-block: var(--space-6);
+  }
+
+  .spec h1 {
+    margin-block: var(--space-2) var(--space-4);
+  }
+
+  .spec h2 {
+    margin-top: var(--space-5);
+    margin-bottom: var(--space-3);
+  }
+
+  .spec h3 {
+    margin-top: var(--space-4);
+    margin-bottom: var(--space-2);
+  }
+
+  .spec p,
+  .spec li {
+    color: var(--c-ink-2);
+    line-height: 2.05;
+  }
+
+  .spec pre {
+    overflow-x: auto;
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius-md);
+    background: var(--c-editor-bg);
+    padding: var(--space-3);
+    line-height: 1.8;
+  }
+
+  .spec pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin-block: var(--space-3);
+  }
+
+  .spec table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .spec th,
+  .spec td {
+    border: 1px solid var(--c-line);
+    padding: 0.45em 0.75em;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .spec th {
+    color: var(--c-ink);
+    background: var(--c-paper-2);
+    font-weight: 700;
+  }
+
+  .spec td {
+    color: var(--c-ink-2);
+  }
+</style>
