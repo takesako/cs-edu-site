@@ -8,7 +8,7 @@ import expressiveCode from 'astro-expressive-code';
 // GitHub Pages: https://kmizu.github.io/cs-edu-site/
 // カスタムドメイン移行時は SITE_URL / BASE_PATH を変えるだけで済むようにしておく
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://kmizu.github.io',
+  site: process.env.SITE_URL ?? 'https://takesako.github.io',
   base: process.env.BASE_PATH ?? '/cs-edu-site',
   trailingSlash: 'always',
   prefetch: true,
