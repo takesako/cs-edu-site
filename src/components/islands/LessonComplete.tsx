@@ -26,7 +26,7 @@ export default function LessonComplete({ lessonId, nextHref, nextTitle }: Props)
                 stroke-linecap="round"
               />
             </svg>
-            このレッスンは、あなたの庭に植わりました。
+            このレッスンを終わりました。あなたの庭に、新しい苗を植えました。
           </p>
           <div class="lesson-complete-actions">
             <button type="button" class="lesson-undone" onClick={() => markDone(lessonId, false)}>

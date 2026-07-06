@@ -22,6 +22,12 @@ function Plant({ grown }: { grown: boolean }) {
   );
 }
 
+const getProgressText = (data: ProgressData) => {
+  const done = Object.values(data.lessons).filter((lesson) => lesson.done).length;
+  const total = COURSES.reduce((sum, course) => sum + course.total, 0);
+  return `${done}/${total}`;
+};
+
 /** あなたの庭：進捗と記録と、庭の引っ越し（エクスポート/インポート） */
 export default function Garden() {
   const data = useStore(progress);
@@ -63,6 +69,7 @@ export default function Garden() {
 
   return (
     <div class="garden">
+      <div>🌲植えたレッスン：<strong>{getProgressText(data)}</strong></div>
       {COURSES.map((course) => {
         const done = doneIds.filter((id) => id.startsWith(`${course.key}/`)).length;
         return (
