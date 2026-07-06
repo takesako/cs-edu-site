@@ -101,6 +101,13 @@ describe('正常系の網羅', () => {
     expect(okRun('「はな」 が 「はな」 と おなじ と いう').output).toEqual(['ほんとう']);
   });
 
+  it('ちがう比較', () => {
+    expect(okRun('1 が 1 と ちがう と いう').output).toEqual(['うそ']);
+    expect(okRun('1 が 2 と ちがう と いう').output).toEqual(['ほんとう']);
+    expect(okRun('「はな」 が 「にわ」 と ちがう と いう').output).toEqual(['ほんとう']);
+    expect(okRun('「1」 が 1 と ちがう と いう').output).toEqual(['ほんとう']);
+  });
+
   it('ことばの中から外の名前を付け替えられる', () => {
     const r = okRun('0 を かず とよぶ\nふやす とは { かず を かず + 1 にする }\nふやす\nふやす\nかず と いう');
     expect(r.output).toEqual(['2']);

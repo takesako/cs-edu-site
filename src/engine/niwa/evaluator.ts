@@ -244,6 +244,8 @@ class Interpreter {
         return num(expr.value);
       case 'str':
         return str(expr.value);
+      case 'bool':
+        return bool(expr.value);
 
       case 'ident': {
         const v = env.lookup(expr.name);
@@ -284,10 +286,12 @@ class Interpreter {
       case 'compare': {
         const l = this.evalExpr(expr.left, env);
         const r = this.evalExpr(expr.right, env);
-        if (expr.op === 'eq') {
-          if (l.type === 'number' && r.type === 'number') return bool(l.value === r.value);
-          if (l.type === 'string' && r.type === 'string') return bool(l.value === r.value);
-          return bool(false);
+
+        if (expr.op === 'eq' || expr.op === 'ne') {
+          let same = false;
+          if (l.type === 'number' && r.type === 'number') same = l.value === r.value;
+          if (l.type === 'string' && r.type === 'string') same = l.value === r.value;
+          return bool(expr.op === 'eq' ? same : !same);
         }
         const ln = this.expectNumber(l, expr.left.span, 'くらべる');
         const rn = this.expectNumber(r, expr.right.span, 'くらべる');

@@ -104,6 +104,11 @@ describe('parse — 式', () => {
     const [s] = stmts('もし こたえ が 7 と おなじ ならば { まる を かく }');
     expect(s).toMatchObject({ type: 'if', cond: { type: 'compare', op: 'eq' } });
   });
+
+  it('ちがう比較', () => {
+    const [s] = stmts('もし こたえ が 7 と ちがう ならば { まる を かく }');
+    expect(s).toMatchObject({ type: 'if', cond: { type: 'compare', op: 'ne' } });
+  });
 });
 
 describe('parse — エラー', () => {

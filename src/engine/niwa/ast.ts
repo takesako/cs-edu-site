@@ -14,6 +14,12 @@ export interface StrLit {
   span: Span;
 }
 
+export interface BoolLit {
+  type: 'bool';
+  value: boolean;
+  span: Span;
+}
+
 export interface Ident {
   type: 'ident';
   name: string;
@@ -28,16 +34,16 @@ export interface BinOp {
   span: Span;
 }
 
-/** くらべる：「Aが B より おおきい/ちいさい」「Aが B と おなじ」 */
+/** くらべる：「Aが B より おおきい/ちいさい」「Aが B と おなじ/ちがう」 */
 export interface Compare {
   type: 'compare';
-  op: 'gt' | 'lt' | 'eq';
+  op: 'gt' | 'lt' | 'eq' | 'ne';
   left: Expr;
   right: Expr;
   span: Span;
 }
 
-export type Expr = NumLit | StrLit | Ident | BinOp | Compare;
+export type Expr = NumLit | StrLit | BoolLit | Ident | BinOp | Compare;
 
 /* ---------- 文 ---------- */
 

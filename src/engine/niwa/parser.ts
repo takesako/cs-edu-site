@@ -269,22 +269,22 @@ class Parser {
       }
       if (this.eat('particle', 'と')) {
         const cmp = this.peek();
-        if (cmp.text === 'おなじ') {
+        if (cmp.text === 'おなじ' || cmp.text === 'ちがう') {
           this.next();
           return {
             type: 'compare',
-            op: 'eq',
+            op: cmp.text === 'おなじ' ? 'eq' : 'ne',
             left,
             right,
             span: { start: left.span.start, end: cmp.span.end },
           };
         }
-        fail('「と」のあとには「おなじ」が続きます。', cmp.span, '例：x が 3 と おなじ');
+        fail('「と」のあとには「おなじ」か「ちがう」が続きます。', cmp.span, '例：x が 3 と おなじ ／ x が 3 と ちがう');
       }
       fail(
         'くらべ方が分かりませんでした。',
         this.peek().span,
-        '例：x が 3 より おおきい ／ x が 3 と おなじ',
+        '例：x が 3 より おおきい ／ x が 3 と おなじ ／ x が 3 と ちがう',
       );
     }
 
@@ -336,6 +336,9 @@ class Parser {
     }
     if (t.kind === 'word') {
       this.next();
+      if (t.text === 'ほんとう' || t.text === 'うそ') {
+        return { type: 'bool', value: t.text === 'ほんとう', span: t.span };
+      }
       const ident: Ident = { type: 'ident', name: t.text, span: t.span };
       return ident;
     }
