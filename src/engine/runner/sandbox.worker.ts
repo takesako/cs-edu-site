@@ -63,8 +63,8 @@ self.onmessage = (e: MessageEvent<HostToWorker>) => {
 /** スタックトレースから利用者コードの行番号を推定する（new Function は1行のラッパを足している） */
 function extractLine(err: unknown): { line?: number } {
   if (!(err instanceof Error) || !err.stack) return {};
-  const m = err.stack.match(/<anonymous>:(\d+):\d+/);
+  const m = err.stack.match(/(?:<anonymous>|Function):(\d+):\d+/); // ChromeとFirefox両対応
   if (!m) return {};
-  const line = Number(m[1]) - 1; // 'use strict' の行ぶんを引く
+  const line = Number(m[1]) - 3; // function anonymous(\n) {\n'use strict';\n の3行を引く
   return line > 0 ? { line } : {};
 }
