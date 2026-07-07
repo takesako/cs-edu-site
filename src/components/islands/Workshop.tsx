@@ -11,12 +11,22 @@ import {
 import { miniProgramToTree } from './miniToTree';
 import TreeView from './TreeView';
 
-const SAMPLE = `fn fact(n) {
+const SAMPLE = `fn fib(n) {
   if n < 2 {
-    1
+    n
   } else {
-    n * fact(n - 1)
+    fib(n - 1) + fib(n - 2)
   }
+}
+fib(10)
+
+fn fact(n) {
+  x = 1
+  while n > 1 {
+    x = x * n
+    n = n - 1
+  }
+  x
 }
 fact(5)`;
 
