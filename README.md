@@ -27,7 +27,7 @@ CS・プログラミング言語教育サイト。
 
 ## niwaコマンド
 
-Homebrewでniwaコマンドを実行できます。
+Homebrewでniwaコマンドをインストールできるようにしました。
 
 ```bash
 brew install takesako/niwa/niwa
