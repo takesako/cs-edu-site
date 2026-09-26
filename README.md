@@ -1,6 +1,6 @@
 # 言語の庭 — ことばを育てて、言語をつくる
 
-**https://taksako.github.io/cs-edu-site/**
+**[https://taksako.github.io/cs-edu-site/](https://takesako.github.io/cs-edu-site/)**
 
 CS・プログラミング言語教育サイト。
 プログラミングを「ことば」として教え、最後は読者が自分のプログラミング言語を設計する側にまわります。
