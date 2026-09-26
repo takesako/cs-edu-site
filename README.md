@@ -4,7 +4,7 @@
 
 CS・プログラミング言語教育サイト。
 プログラミングを「ことば」として教え、最後は読者が自分のプログラミング言語を設計する側にまわります。
-[@kmizu](https://github.com/kmizu)さんの個人プロジェクトを [@takesako](https://github.com/takesako) がforkして、授業で活用できるよう修正を施しています。
+[@kmizu](https://github.com/kmizu)さんの個人プロジェクトを [@takesako](https://github.com/takesako) がforkして、授業で活用できるよういくつか修正を施しています。
 
 ## 特徴
 
